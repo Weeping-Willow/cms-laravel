@@ -4,13 +4,14 @@
 # Things used in this project
 - Routes
 - Views
-- Database Factories
-- Database seeds
 - Database migarations
 - Models
-- Controllers
-- User data validation 
+- Controllers resource
+- Route resource 
+- Using route names instead
 - Flash messages
+- Requests
+
 
 # Requirement 
 - Git
