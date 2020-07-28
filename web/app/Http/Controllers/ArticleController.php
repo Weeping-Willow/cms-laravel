@@ -3,63 +3,104 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Category;
 use App\Http\Requests\Articles\CreateArticleRequest;
 use App\Http\Requests\Articles\UpdateArticleRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
     public function index(): View
     {
-        return view('article.index')->with('articles', Article::all());
+        return view('article.index')->with('articles', Article::all())->with('categories',Category::all());
     }
 
     public function create(): View
     {
-        return view('article.create');
+        return view('article.create')->with('categories',Category::all());
     }
 
     public function store(CreateArticleRequest $request): RedirectResponse
     {
-        $article = new Article();
+        $image = $request->image->store('articles');
 
-        $article->name = $request->name;
-
-        $article->save();
+        Article::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            'image' => $image,
+            'published_at' => $request->published_at,
+            'category_id' => $request->category
+        ]);
 
         session()->flash('success', 'Article created successfully');
 
         return redirect(route('article.index'));
     }
 
-    public function show($id): View
+    public function show(Article $article): View
     {
         //
     }
 
     public function edit(Article $article): View
     {
-        return view('article.create')->with('article', $article);
+        return view('article.create')->with('article', $article)->with('categories',Category::all());
     }
 
     public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
     {
-        $article->name = $request->name;
+        $data = $request->only(['title','description','published_at','content','category']);
 
-        $article->save();
+        if ($request->hasFile('image')){
+            $image = $request->image->store('articles');
+            $article->deleteImage();
+
+            $data['image'] = $image;
+        }
+        $data['category_id'] = $data['category'];
+
+        $article->update($data);
 
         session()->flash('success', 'Article updated successfully');
 
         return redirect(route('article.index'));
     }
 
-    public function destroy(Article $article): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
-        $article->delete();
+        $article = Article::withTrashed()->where('id',$id)->firstOrFail();
 
-        session()->flash('success', 'Article deleted successfully');
+        if ($article->trashed()){
+            $article->deleteImage();
+            $article->forceDelete();
+            session()->flash('success', 'Article deleted successfully');
+        }
+        else{
+            $article->delete();
+            session()->flash('success', 'Article trashed successfully');
+        }
 
         return redirect(route('article.index'));
+    }
+
+    public function trashed(): View
+    {
+        $trashed = Article::onlyTrashed()->get();
+
+        return view('article.index')->withArticles($trashed);
+    }
+
+    public function restore($id): RedirectResponse{
+        $article = Article::withTrashed()->where('id',$id)->firstOrFail();
+
+        $article->restore();
+
+        session()->flash('success', 'Article restored successfully');
+
+        return redirect()->back();
     }
 }

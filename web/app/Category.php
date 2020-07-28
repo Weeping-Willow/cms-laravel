@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    //
-    /**
-     * @var mixed
-     */
-    private $name;
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }

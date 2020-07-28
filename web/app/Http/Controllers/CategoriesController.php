@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Category;
+use App\Http\Requests\Articles\CreateArticleRequest;
+use App\Http\Requests\Categories\CreateCategoryRequest;
 use App\Http\Requests\Categories\UpdateCategoryRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Http\Requests\Categories\CreateCategoryRequest;
 use Illuminate\View\View;
 
 class CategoriesController extends Controller
@@ -23,11 +25,11 @@ class CategoriesController extends Controller
 
     public function store(CreateCategoryRequest $request): RedirectResponse
     {
-        $category = new Category();
+        $categories = new Category();
 
-        $category->name = $request->name;
+        $categories->name = $request->name;
 
-        $category->save();
+        $categories->save();
 
         session()->flash('success', 'Category created successfully');
 

@@ -23,3 +23,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('categories','CategoriesController');
 Route::resource('article','ArticleController');
+Route::get('trashed-articles','ArticleController@trashed')->name('trashed-articles.index');
+Route::put('restore-article/{article}','ArticleController@restore')->name('restore-articles');

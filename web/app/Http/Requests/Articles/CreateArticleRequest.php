@@ -10,6 +10,18 @@ class CreateArticleRequest extends FormRequest
      * @var mixed
      */
     private $name;
+    /**
+     * @var mixed
+     */
+    private $description;
+    /**
+     * @var mixed
+     */
+    private $title;
+    /**
+     * @var mixed
+     */
+    private $image;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +30,7 @@ class CreateArticleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +41,11 @@ class CreateArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|unique:articles',
+            'description' => 'required',
+            'content' => 'required',
+            'image' => 'required|image',
+            'category' => 'required'
         ];
     }
 }

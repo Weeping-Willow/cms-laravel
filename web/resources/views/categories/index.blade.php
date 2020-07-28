@@ -9,27 +9,31 @@
             <h3>Categories</h3>
         </div>
         <div class="card-body">
-            <table class="table">
-                <thead>
-                <th>Name</th>
-                <th></th>
-                </thead>
+            @if($categories->count() > 0)
+                <table class="table">
+                    <thead>
+                    <th>Name</th>
+                    <th>Article counts</th>
+                    </thead>
 
-                <tbody>
-                @foreach($categories as $category)
-                    <tr>
-                        <td>
-                            {{ $category->name }}
-                        </td>
-                        <td>
-                            <a href="{{route('categories.edit',$category->id)}}" class="btn btn-sm btn-info">Edit</a>
-                            <button class="btn btn-sm btn-danger" onclick="handleDelete({{ $category->id }})">Delete</button>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-            <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                    <tbody>
+                    @foreach($categories as $category)
+                        <tr>
+                            <td>
+                                {{ $category->name }}
+                            </td>
+                            <td>
+                                {{$category->articles->count()}}
+                            </td>
+                            <td>
+                                <a href="{{route('categories.edit',$category->id)}}" class="btn btn-sm btn-info">Edit</a>
+                                <button class="btn btn-sm btn-danger" onclick="handleDelete({{ $category->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog">
                     <form action="" method="POST" id="deleteCategoryForm">
                         {{ csrf_field() }}
@@ -52,7 +56,9 @@
                     </form>
                 </div>
             </div>
-
+            @else
+                <h3 class="text-center">No categories yet</h3>
+            @endif
         </div>
     </div>
 @endsection
