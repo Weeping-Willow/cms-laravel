@@ -29,8 +29,10 @@
                             {{ $article->title }}
                         </td>
                         <td>
-                            <a href="{{ route('categories.edit',$article->category->id) }}">
-                                {{ $article->category->name }}
+                            <a href="{{ route('categories.edit',isset($article->category->id) ? $article->category->id : '') }}">
+                                @if (isset($article->category->id))
+                                    {{ $article->category->name }}
+                                @endif
                             </a>
                         </td>
                         @if(!$article->trashed())

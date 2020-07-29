@@ -19,9 +19,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::resource('categories','CategoriesController');
+    Route::resource('article','ArticleController');
+    Route::resource('tags','TagsController');
+    Route::get('trashed-articles','ArticleController@trashed')->name('trashed-articles.index');
+    Route::put('restore-article/{article}','ArticleController@restore')->name('restore-articles');
 
-Route::resource('categories','CategoriesController');
-Route::resource('article','ArticleController');
-Route::get('trashed-articles','ArticleController@trashed')->name('trashed-articles.index');
-Route::put('restore-article/{article}','ArticleController@restore')->name('restore-articles');
+});
+
+Route::middleware(['auth','admin'])->group(function (){
+    Route::get('users','UsersController@index')->name('users.index');
+    Route::post('users/{user}/make-admin','UsersController@makeAdmin')->name('users.make-admin');
+    Route::get('users/profile','UsersController@edit')->name('users.edit-profile');
+    Route::put('users/{user}/update','UsersController@update')->name('users.update-profile');
+});

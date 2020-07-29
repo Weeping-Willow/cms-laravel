@@ -6,6 +6,7 @@ use App\Article;
 use App\Category;
 use App\Http\Requests\Articles\CreateArticleRequest;
 use App\Http\Requests\Articles\UpdateArticleRequest;
+use App\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -13,21 +14,26 @@ use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('verifyCategoryCount')->only(['create','store']);
+    }
+
     public function index(): View
     {
-        return view('article.index')->with('articles', Article::all())->with('categories',Category::all());
+        return view('article.index')->with('articles', Article::all())->with('categories',Category::all())->with('tags',Tag::all());
     }
 
     public function create(): View
     {
-        return view('article.create')->with('categories',Category::all());
+        return view('article.create')->with('categories',Category::all())->with('tags',Tag::all());
     }
 
     public function store(CreateArticleRequest $request): RedirectResponse
     {
         $image = $request->image->store('articles');
 
-        Article::create([
+        $article = Article::create([
             'title' => $request->title,
             'description' => $request->description,
             'content' => $request->content,
@@ -35,6 +41,10 @@ class ArticleController extends Controller
             'published_at' => $request->published_at,
             'category_id' => $request->category
         ]);
+
+        if ($request->tags){
+            $article->tags()->attach($request->tags);
+        }
 
         session()->flash('success', 'Article created successfully');
 
@@ -48,7 +58,7 @@ class ArticleController extends Controller
 
     public function edit(Article $article): View
     {
-        return view('article.create')->with('article', $article)->with('categories',Category::all());
+        return view('article.create')->with('article', $article)->with('categories',Category::all())->with('tags',Tag::all());
     }
 
     public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
@@ -62,6 +72,10 @@ class ArticleController extends Controller
             $data['image'] = $image;
         }
         $data['category_id'] = $data['category'];
+
+        if ($request->tags){
+            $article->tags()->sync($request->tags);
+        }
 
         $article->update($data);
 

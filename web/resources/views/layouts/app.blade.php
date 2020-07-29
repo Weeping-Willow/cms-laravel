@@ -57,11 +57,15 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('users.edit-profile') }}">
+                                    My profile
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
+
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                       style="display: none;">
@@ -83,15 +87,27 @@
                     <div class="alert alert-success">
                         {{ session()->get('success') }}
                     </div>
+                @elseif(session()->has('error'))
+                    <div class="alert alert-danger">
+                        {{ session()->get('error') }}
+                    </div>
                 @endif
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-group">
+                                @if(auth()->user()->isAdmin())
+                                <li class="list-group-item">
+                                    <a href="{{ route('users.index') }}">Users</a>
+                                </li>
+                            @endif
                             <li class="list-group-item">
                                 <a href="{{ route('article.index') }}">Articles</a>
                             </li>
                             <li class="list-group-item">
                                 <a href="{{ route('categories.index') }}">Categories</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('tags.index') }}">Tags</a>
                             </li>
                         </ul>
                         <ul class="list-group mt-5">

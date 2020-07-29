@@ -64,11 +64,9 @@
       <path value="$PROJECT_DIR$/web/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/web/vendor/phar-io/version" />
       <path value="$PROJECT_DIR$/web/vendor/phar-io/manifest" />
-      <path value="$PROJECT_DIR$/web/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/web/vendor/asm89/stack-cors" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/console" />
-      <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/http-kernel" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-php72" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/event-dispatcher-contracts" />
@@ -79,7 +77,6 @@
       <path value="$PROJECT_DIR$/web/vendor/symfony/finder" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/mime" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/service-contracts" />
-      <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-ctype" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-mbstring" />
       <path value="$PROJECT_DIR$/web/vendor/symfony/translation" />
       <path value="$PROJECT_DIR$/web/vendor/filp/whoops" />
@@ -101,6 +98,13 @@
       <path value="$PROJECT_DIR$/web/vendor/phpdocumentor/reflection-common" />
       <path value="$PROJECT_DIR$/web/vendor/vlucas/phpdotenv" />
       <path value="$PROJECT_DIR$/web/vendor/laravel/ui" />
+      <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/web/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/web/vendor/symfony/polyfill-php70" />
+      <path value="$PROJECT_DIR$/web/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/web/vendor/thomaswelton/gravatarlib" />
+      <path value="$PROJECT_DIR$/web/vendor/thomaswelton/laravel-gravatar" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

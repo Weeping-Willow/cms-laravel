@@ -15,7 +15,7 @@ class CategoriesController extends Controller
 {
     public function index(): View
     {
-        return view('categories.index')->with('categories',Category::all());
+        return view('categories.index')->with('categories', Category::all());
     }
 
     public function create(): View
@@ -43,7 +43,7 @@ class CategoriesController extends Controller
 
     public function edit(Category $category): View
     {
-        return view('categories.create')->with('category',$category);
+        return view('categories.create')->with('category', $category);
     }
 
     public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
@@ -52,16 +52,22 @@ class CategoriesController extends Controller
 
         $category->save();
 
-        session()->flash('success','Category updated successfully');
+        session()->flash('success', 'Category updated successfully');
 
         return redirect(route('categories.index'));
     }
 
     public function destroy(Category $category): RedirectResponse
     {
+        if ($category->articles->count() > 0) {
+            session()->flash('error','Category cannot be deleted because it has some Articles');
+
+            return redirect()->back();
+        }
+
         $category->delete();
 
-        session()->flash('success','Category deleted successfully');
+        session()->flash('success', 'Category deleted successfully');
 
         return redirect(route('categories.index'));
     }
